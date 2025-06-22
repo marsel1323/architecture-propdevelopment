@@ -1,0 +1,71 @@
+# Полный доступ (админ)
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: cluster-admin
+rules:
+  - apiGroups: ["*"]
+    resources: ["*"]
+    verbs: ["*"]
+
+---
+
+# Только чтение (обзор)
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: cluster-reader
+rules:
+  - apiGroups: [""]
+    resources: ["pods", "services", "configmaps", "secrets", "nodes"]
+    verbs: ["get", "list", "watch"]
+
+---
+
+# Редактирование (без секретов)
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: cluster-editor
+rules:
+  - apiGroups: [""]
+    resources: ["pods", "services", "deployments", "configmaps"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+
+---
+
+# Чтение секретов и конфигураций
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: secret-reader
+rules:
+  - apiGroups: [""]
+    resources: ["secrets", "configmaps"]
+    verbs: ["get", "list", "watch"]
+
+---
+
+# Изолированный доступ к namespace "finance"
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: finance-isolator
+  namespace: finance
+rules:
+  - apiGroups: [""]
+    resources: ["pods", "services", "deployments"]
+    verbs: ["get", "list", "watch"]
+
+---
+
+# Поддержка: доступ к логам и событиям в production
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: support-reader
+  namespace: production
+rules:
+  - apiGroups: [""]
+    resources: ["pods", "pods/log", "events"]
+    verbs: ["get", "list", "watch"]
