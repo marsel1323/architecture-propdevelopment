@@ -1,0 +1,95 @@
+# DevOps → cluster-admin
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: bind-devops-admin
+subjects:
+  - kind: User
+    name: devops
+    apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: cluster-admin
+  apiGroup: rbac.authorization.k8s.io
+
+---
+
+# Analyst → cluster-reader
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: bind-analyst-reader
+subjects:
+  - kind: User
+    name: analyst
+    apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: cluster-reader
+  apiGroup: rbac.authorization.k8s.io
+
+---
+
+# Backend → cluster-editor
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: bind-backend-editor
+subjects:
+  - kind: User
+    name: backend
+    apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: cluster-editor
+  apiGroup: rbac.authorization.k8s.io
+
+---
+
+# Security → secret-reader
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: bind-security-secret
+subjects:
+  - kind: User
+    name: security
+    apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: secret-reader
+  apiGroup: rbac.authorization.k8s.io
+
+---
+
+# Finance-team → finance-isolator (namespace role)
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: bind-finance
+  namespace: finance
+subjects:
+  - kind: User
+    name: finance-user
+    apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: finance-isolator
+  apiGroup: rbac.authorization.k8s.io
+
+---
+
+# Support → support-reader (namespace role)
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: bind-support
+  namespace: production
+subjects:
+  - kind: User
+    name: support-user
+    apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: support-reader
+  apiGroup: rbac.authorization.k8s.io
